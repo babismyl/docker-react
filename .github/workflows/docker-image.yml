@@ -1,0 +1,18 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  buildRun:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build and Run the Docker image
+      run: |
+        docker build -t docker.io/babismylonas/docker-react -f Dockerfile.dev .
+        docker run -e CI=true babismylonas/docker-react npm run test 
