@@ -8,22 +8,23 @@ on:
 
 jobs:
 
-  buildRun:
+  buildRunDeploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout source code
+      uses: actions/checkout@v3
+
     - name: Build and Run the Docker image
       run: |
         docker build -t docker.io/babismylonas/docker-react -f Dockerfile.dev .
         docker run -e CI=true babismylonas/docker-react npm run test
-  
-  deploy:
-    uses: einaregilsson/beanstalk-deploy@v20
-    with:
-      aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID}}
-      aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-      application_name: docker-react
-      environment_name: Dockerreact-env
-      version_label: 12345
-      region: us-east-1
-      existing_bucket_name: elasticbeanstalk-us-east-1-711496645742
+    - name: Deploy to AWS EB
+      uses: einaregilsson/beanstalk-deploy@v20
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID}}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+        application_name: docker-react
+        environment_name: Dockerreact-env
+        version_label: 12345
+        region: us-east-1
+        existing_bucket_name: elasticbeanstalk-us-east-1-711496645742
