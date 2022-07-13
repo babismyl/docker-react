@@ -32,3 +32,4 @@ jobs:
         version_label: "version-label-${{ steps.format-time.outputs.replaced }}"
         region: us-east-1
         existing_bucket_name: elasticbeanstalk-us-east-1-711496645742
+        deployment_package: deploy.zip
