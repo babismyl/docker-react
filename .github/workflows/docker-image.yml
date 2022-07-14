@@ -11,6 +11,10 @@ jobs:
   buildRunDeploy:
     runs-on: ubuntu-latest
     steps:
+
+    - name: Automatic Versioning
+      uses: nicupavel/action-files-version-increment@v3
+
     - name: Checkout source code
       uses: actions/checkout@v3
 
@@ -29,7 +33,7 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
         application_name: docker-react
         environment_name: Dockerreact-env
-        version_label: "version-label-${{ steps.format-time.outputs.replaced }}"
+        version_label: "version-label-${{ steps.versioning_job.outputs.time }}"
         region: us-east-1
         existing_bucket_name: elasticbeanstalk-us-east-1-711496645742
         deployment_package: deploy.zip
